@@ -3,7 +3,7 @@ CFLAGS = -m32 -ffreestanding -O2 -Wall -Wextra
 LD = ld
 LDFLAGS = -m elf_i386 -nostdlib
 
-KERNEL_OBJS = boot/multiboot_header.o kernel/main.o kernel/vga.o
+KERNEL_OBJS = boot/multiboot_header.o kernel/main.o kernel/vga.o kernel/keyboard.o
 
 all: os.iso
 
@@ -15,6 +15,9 @@ kernel/main.o: kernel/main.c kernel/vga.h
 
 kernel/vga.o: kernel/vga.c kernel/vga.h
 	$(CC) $(CFLAGS) -c kernel/vga.c -o kernel/vga.o
+
+kernel/keyboard.o: kernel/keyboard.c kernel/keyboard.h
+	$(CC) $(CFLAGS) -c kernel/keyboard.c -o kernel/keyboard.o
 
 kernel.bin: $(KERNEL_OBJS) linker.ld
 	$(LD) $(LDFLAGS) -T linker.ld -o kernel.bin $(KERNEL_OBJS)
